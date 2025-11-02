@@ -32,7 +32,7 @@ export const Canvas = () => {
     <div style={{ display: 'flex' }}>
       <div className='canvas-sidebar'>
         <div className="canvas-sidebar-logo">
-            <Link to='/'>
+            <Link to='/lms'>
             <img src={canva} alt="" />
             </Link>
             <h4>Canva</h4>
