@@ -24,7 +24,7 @@ export const MsTeams = () => {
     <div className="ms-wrapper">
       <div className="ms-sidebar">
         <div className="ms-sidebar-logo">
-          <Link to='/lms'>
+          <Link to="lms">
           <img src={msteams} alt="Teams" />
           </Link>
         </div>
