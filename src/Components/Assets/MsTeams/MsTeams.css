@@ -1,0 +1,126 @@
+
+.ms-wrapper {
+  display: flex;
+  height: 100vh;
+  background: #ceceda;
+  color: white;
+  overflow: hidden;
+}
+
+.ms-sidebar {
+  width: 68px;
+  background: linear-gradient(to bottom, #6264a7, #464775);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 0;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.ms-sidebar-logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 10px;
+  display: block;
+  margin: auto;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.ms-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.ms-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.ms-menu-item img {
+    filter: brightness(0) invert(1);
+    width: 24px;
+    height: 24px;
+}
+
+.ms-menu-item:hover,
+.ms-menu-item.active {
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+  border-left: 4px solid white;
+}
+
+.ms-sidebar-bottom {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.ms-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+}
+
+.ms-topbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background: #0c0c0d;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  height: 45px; 
+}
+
+.ms-searchbar {
+   position: absolute;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 300px;
+   background: #2b2b2d;
+   border: none;
+   padding: 8px 14px;
+   border-radius: 6px;
+   color: #ddd;
+   outline: none;
+}
+
+.ms-top-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-small {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
+.profile-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5eb3d1;
+}
+
+.ms-page {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  color: white;
+}

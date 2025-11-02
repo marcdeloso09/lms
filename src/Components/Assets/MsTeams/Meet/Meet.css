@@ -1,0 +1,112 @@
+.meet-page {
+  background-color: #1e1e1e;
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.meet-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Top buttons */
+.meet-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.action-btn {
+  background-color: #2d2d2d;
+  color: #ccc;
+  border: 1px solid #3a3a3a;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #383838;
+  color: #fff;
+}
+
+.action-btn.primary {
+  background-color: #4a3aff;
+  color: #fff;
+  border: none;
+}
+
+.action-btn.primary:hover {
+  background-color: #5a4aff;
+}
+
+/* Sections */
+.meet-section {
+  margin-top: 25px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+/* Meeting link card */
+.meeting-card {
+  display: flex;
+  align-items: center;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  padding: 18px;
+  gap: 15px;
+  max-width: 420px;
+}
+
+.meeting-icon {
+  font-size: 1.8rem;
+}
+
+.meeting-info p {
+  color: #bbb;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.learn-link {
+  color: #6f8eff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.learn-link:hover {
+  text-decoration: underline;
+}
+
+/* Scheduled meetings */
+.scheduled-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.no-meetings {
+  flex: 1;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.illustration img {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  opacity: 0.9;
+}

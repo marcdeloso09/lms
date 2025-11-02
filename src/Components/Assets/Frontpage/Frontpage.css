@@ -1,0 +1,54 @@
+.login-boxes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.boxes{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+.boxes div{
+    background-color: rgb(239, 234, 234);
+    width: 200px;
+    width: 200px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 14px;
+    border-radius: 20px;
+}
+.boxes div button{
+    border: none;
+    color: black;
+    padding: 10px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: rgba(161, 184, 223, 0.672);
+    border-radius: 10px;
+}
+
+.boxes div img{
+    width: 130px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.box-logo p{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.boxes .box-3 img {
+    width: 160px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+

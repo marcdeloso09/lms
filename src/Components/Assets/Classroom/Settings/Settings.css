@@ -1,0 +1,50 @@
+.settings-container {
+  padding: 20px;
+  color: #333;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.behavior-summary, .behavior-log {
+  margin-bottom: 20px;
+}
+
+.behavior-box {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(240, 234, 234, 0.1);
+}
+
+.behavior-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.behavior-table th, .behavior-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.behavior-table th {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.clear-button {
+  background: #dc2626;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-button:hover {
+  background: #b91c1c;
+}

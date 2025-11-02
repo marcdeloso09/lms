@@ -1,0 +1,80 @@
+.assignments-container {
+  padding: 20px;
+  color: white;
+  background-color: #121212; /* Dark Theme */
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.assignments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.assignments-header h2 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.filter-icon {
+  width: 20px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.assignments-table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+  color: #cfcfcf;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.assignments-list {
+  margin-top: 10px;
+}
+
+.assignment-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 15px 0;
+  border-bottom: 1px solid #222;
+  align-items: center;
+}
+
+.assignment-title .main-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.assignment-title .sub-title {
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
+.assignment-due,
+.assignment-status {
+  font-size: 14px;
+}
+
+.status-done {
+  color: #4caf50; /* Green */
+}
+
+.status-missing {
+  color: #e53935; /* Red */
+}
+
+.status-assigned {
+  color: #ffd54f; /* Yellowish */
+}
+
+.assignment-row:hover {
+  background-color: #1e1e1e;
+  transition: 0.2s ease-in-out;
+}

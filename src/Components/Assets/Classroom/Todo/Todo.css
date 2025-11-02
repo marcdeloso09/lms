@@ -1,0 +1,67 @@
+.todo-container {
+  width: 60%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.filter-dropdown {
+  width: 200px;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  font-weight: bold;
+}
+
+.section-title {
+  flex: 1;
+}
+
+.section-count {
+  margin-right: 10px;
+}
+
+.todo-item {
+  display: flex;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.todo-icon {
+  width: 20px;
+  height: 20px;
+  background-color: #4c75ff;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.todo-content h4 {
+  margin: 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.course {
+  font-size: 12px;
+  color: gray;
+}
+
+.posted {
+  font-size: 12px;
+  color: #666;
+}
+
+.see-all {
+  text-align: center;
+  color: #4c75ff;
+  cursor: pointer;
+  padding: 15px 0;
+}

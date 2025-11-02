@@ -1,0 +1,277 @@
+.chat-container {
+  display: flex;
+  height: 100vh;
+  background-color: #181818;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.chat-sidebar {
+  width: 280px;
+  background-color: #202020;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #333;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+}
+
+.sidebar-header h2 {
+  font-size: 1rem;
+}
+
+.header-icons button {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.header-icons button:hover {
+  color: #fff;
+}
+
+.chat-list {
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-item {
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chat-item:hover {
+  background-color: #2a2a2a;
+}
+
+.chat-item.active {
+  background-color: #2f2f2f;
+}
+
+.chat-avatar {
+  font-size: 1.4rem;
+  margin-right: 10px;
+}
+
+.chat-info h3 {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.chat-info p {
+  font-size: 0.8rem;
+  color: #bbb;
+  margin: 0;
+}
+
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f1f1f;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a2a2a;
+  padding: 12px 20px;
+  border-bottom: 1px solid #333;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-avatar.large {
+  font-size: 1.8rem;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.sender {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.message-bubble {
+  background-color: #3a3a3a;
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  max-width: 60%;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.message-bubble:hover {
+  background-color: #4a4a4a;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  color: #888;
+  position: absolute;
+  right: 0;
+  bottom: -14px;
+}
+
+.chat-input-area {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid #333;
+  background-color: #2a2a2a;
+}
+
+.input-icons {
+  display: flex;
+  gap: 8px;
+  margin-right: 10px;
+}
+
+.input-icons button {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.input-icons button:hover {
+  color: #fff;
+}
+
+.chat-input-area input {
+  flex: 1;
+  background: #1f1f1f;
+  border: none;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.send-btn {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 1.4rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  color: #fff;
+}
+
+.chat-container.enlarged {
+  transform: scale(1.01);
+  transition: transform 0.5s ease;
+  z-index: 1500;
+}
+
+.chat-click-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000; /* sits under the grid but above everything else */
+  pointer-events: auto;
+}
+
+/* Enlarged mode (scroll or click error) */
+.chat-container.enlarged,
+.chat-container.click-error-enlarged {
+  transform: scale(1.01);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Enlarge Mode */
+body.enlarge-mode .ms-sidebar {
+  display: none !important;
+}
+
+.chat-container {
+  position: relative; 
+  z-index: 1010;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+body.enlarge-mode .ms-content {
+  width: 100% !important;
+}
+
+/* Focus Mode */
+.hidden-chat-item {
+  filter: blur(5px);
+  opacity: 0.3;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Click Error Overlay */
+.chat-container.click-error-enlarged {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* Tracking Panel */
+.tracking-panel {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 3000;
+}
+
+.chat-item {
+  transition: all 0.3s ease;
+}
+
+.hidden-chat {
+  filter: blur(3px);
+  opacity: 0.4;
+  transform: scale(0.98);
+  pointer-events: none;
+}

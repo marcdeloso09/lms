@@ -1,0 +1,189 @@
+.classroom-sidebar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1px;
+    gap: 20px;
+    width: 100%;
+    max-width: 250px;
+    height: 150vh;
+    background: #f6f6f6;
+    transition: all 0.3s ease;
+}
+
+.classroom-sidebar-item span {
+  text-decoration: none;   
+  color: black;         
+  font-size: 16px;         
+  font-weight: 500;      
+}
+
+.classroom-sidebar-logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.classroom-sidebar-item img {
+    width: 24px; 
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.classroom-sidebar-logo{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 20px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #f6f6f6;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.classroom-sidebar-item{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 20px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #f6f6f6;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+@media(max-width:800px){
+    .classroom-sidebar-item{
+        margin: 0;
+    }
+}
+
+
+.classroom-sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0px 20px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #f6f6f6;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.classroom-sidebar-item:hover {
+  background-color: #beb9b9;
+  border-radius: 8px;
+}
+
+.arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.class-list {
+  margin-top: 5px;
+}
+
+.class-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 15px;
+  text-decoration: none;
+  color: white;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.class-item:hover {
+  background-color: #4b74dd;
+}
+
+.class-icon {
+  background-color: #4c75ff;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.class-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.class-title {
+  font-size: 14px;
+}
+
+.class-section {
+  font-size: 12px;
+  color: #a0a0a0;
+}
+.classroom-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: #fff;
+}
+
+.classroom-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background: #f6f6f6;
+  padding: 15px 25px;
+
+  position: relative; 
+}
+
+.classroom-topbar h2 {
+  position: absolute; 
+  left: 25px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+.classroom-searchbar {
+  display: center;
+  align-items: center;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.classroom-searchbar:hover {
+  border-color: #888;
+}
+.classroom-searchbar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+  color: #333;
+}
+
+.classroom-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+} 

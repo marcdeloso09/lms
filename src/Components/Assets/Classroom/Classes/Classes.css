@@ -1,0 +1,182 @@
+.class-page {
+  padding: 20px 200px;
+  font-family: "Google Sans", sans-serif;
+}
+
+.class-banner {
+  color: white;
+  border-radius: 10px;
+  padding: 40px 30px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tabs {
+  display: flex;
+  gap: 30px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 0;
+  color: #555;
+}
+
+.tabs button.active {
+  color: #1a73e8;
+  border-bottom: 3px solid #1a73e8;
+  font-weight: 600;
+}
+
+.announce-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.announce-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.announce-input {
+  flex: 1;
+  border: none;
+  outline: none;
+}
+
+.announcement-card,
+.classwork-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.teacher-card {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.people-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.people-section li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.recent-focus-active .announcement-card:not(.recent-hidden-card) {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.recent-class-focus-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* perfect center */
+  background: rgb(177, 193, 214);
+  color: rgb(62, 62, 203);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.recent-class-attempt-popup {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* perfect center */
+  background: rgb(254, 255, 199);
+  color: rgb(180, 159, 5);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 200;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 10;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recent-hidden-card {
+  filter: blur(2px);
+  pointer-events: none;
+  opacity: 1.0;
+  transition: all 0.3s ease;
+}
+
+.recent-click-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.announcement-resources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 12px;
+  padding: 8px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resource-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.resource-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.resource-due {
+  font-size: 12px;
+  color: #777;
+}
+

@@ -1,0 +1,145 @@
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-header h2 {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+.nav-btn:hover {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+.calendar-content {
+  display: flex;
+  gap: 20px;
+}
+
+.calendar-main {
+  flex: 1;
+}
+
+.calendar-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+  color: #555;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.calendar-day {
+  height: 80px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.calendar-day:hover {
+  background: #f9f9f9;
+}
+
+.calendar-day.empty {
+  background: #fafafa;
+  border: 1px solid transparent;
+}
+
+.calendar-sidebar {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mini-calendar {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mini-calendar-header {
+  background: #f3f3f3;
+  padding: 6px 0;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.mini-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 6px;
+}
+
+.mini-calendar-grid div {
+  padding: 2px 0;
+}
+
+.calendar-legend h4 {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.calendar-legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.calendar-legend li {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.dot.blue { background-color: #007bff; }
+.dot.pink { background-color: #e83e8c; }
+.dot.green { background-color: #28a745; }

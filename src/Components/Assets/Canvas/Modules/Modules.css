@@ -1,0 +1,320 @@
+/* ============================
+   GENERAL LAYOUT
+   ============================ */
+.subjects-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  position: relative;
+  z-index: 1010;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.sidebar {
+  width: 16.6%;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h2 {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar li:hover {
+  background-color: #f3f4f6;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+/* ============================
+   ITEM BASE STYLING
+   ============================ */
+.item-list {
+  margin: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.item,
+.assignment-item,
+.lesson-item {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.item:hover,
+.assignment-item:hover,
+.lesson-item:hover {
+  background-color: #e5e7eb;
+}
+
+/* ============================
+   RIGHT PANEL
+   ============================ */
+.right-panel {
+  width: 16.6%;
+  padding: 1rem;
+}
+
+.right-button {
+  width: 100%;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.right-button:hover {
+  background-color: #e5e7eb;
+}
+
+/* ============================
+   SHARED FOCUS LABEL
+   ============================ */
+.focus-mode-label {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: #1e3a8a;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ============================
+   ASSIGNMENT FOCUS BEHAVIOR
+   ============================ */
+.assignment-item.focused-assign {
+  background-color: #e8f3ff !important;
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+  transform: scale(1.02);
+  z-index: 5;
+  transition: all 0.3s ease-in-out;
+}
+
+.assignment-item.hidden-assign {
+  opacity: 0.3;
+  filter: blur(3px);
+  will-change: filter, opacity;
+  pointer-events: none;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Container glow for active focus */
+.item-list.assignments-list:has(.focused-assign) {
+  margin: 5px;
+  border: 2px solid #93c5fd;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+  padding: 6px;
+  box-shadow: 0 0 12px rgba(147, 197, 253, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* ============================
+   LESSON FOCUS BEHAVIOR
+   ============================ */
+.lesson-item.focused-lesson {
+  background-color: #fff7ed !important;
+  border: 2px solid #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+  transform: scale(1.03);
+  z-index: 5;
+  transition: all 0.3s ease-in-out;
+}
+
+.lesson-item.hidden-lesson {
+  opacity: 0.3;
+  filter: blur(3px);
+  pointer-events: none;
+  will-change: filter, opacity;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Container glow for active lesson focus */
+.item-list.lessons-list:has(.focused-lesson){
+  margin: 5px;
+  border: 2px solid #fdba74;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
+  padding: 6px;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* ============================
+   BEHAVIOR PANEL (tracking)
+   ============================ */
+.tracking-panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #525253;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tracking-panel p {
+  margin: 0.25rem 0;
+  color: #e3e5e9;
+  font-size: 0.9rem;
+}
+
+/* ============================
+   CLICK ERROR MODE OVERLAY
+   ============================ */
+.click-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  animation: flashOverlay 0.5s ease-in-out;
+}
+
+@keyframes flashOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Click Error Rate Text Feedback */
+.error-rate-high {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.error-rate-normal {
+  color: #e1e2e1;
+}
+
+/* Click Error Mode Pulse Label */
+.click-error-overlay::after {
+  content: "Click Error Mode Active";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  color: #b91c1c;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  animation: pulseText 1.5s infinite;
+}
+
+.click-error-overlay .subjects-container{
+  position: relative; 
+  z-index: 1010; 
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+@keyframes pulseText {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Ensure sidebar panels always appear above the subjects container */
+.account-panel,
+.courses-panel,
+.history-panel {
+  position: fixed;
+  top: 0;
+  left: 170px; /* Adjust if your sidebar width differs */
+  height: 100vh;
+  width: 280px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 3000; /* Must be higher than subjects-container (1010) */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hidden state for sliding effect */
+.account-panel.hide,
+.courses-panel.hide,
+.history-panel.hide {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Visible sliding state */
+.account-panel.show,
+.courses-panel.show,
+.history-panel.show {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}

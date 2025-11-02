@@ -1,0 +1,220 @@
+.home-contents {
+  padding: 30px;
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+}
+
+.classes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px;
+}
+
+.class-box {
+  background-color: #6c757d; 
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.class-box h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.class-box button {
+  align-self: flex-end;
+  background: #343a40;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.class-box button:hover {
+  background: #212529;
+}
+
+.announcements {
+  display: flex;
+  justify-content: center;  /* centers the box horizontally */
+  margin-top: 20px;
+}
+
+.reminder-box {
+  background: #fff;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  max-width: 320px;
+  text-align: left; /* keep text aligned properly */
+}
+
+.reminder-box h2 {
+  color: black;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center; /* title centered */
+}
+
+.task-list {
+  color: black;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.class-box:hover {
+  transform: translateY(-4px);
+}
+
+.task-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.task-list input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+@media screen and (min-width: 1200px) {
+  .reminder-box {
+    max-width: 320px; 
+  }
+}
+
+@media screen and (max-width: 1199px) and (min-width: 768px) {
+  .reminder-box {
+    max-width: 500px; 
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .reminder-box {
+    width: 90%; 
+  }
+}
+
+.hidden-card {
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.class-focus-active .class-box:not(.hidden-card) {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.class-click-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000; /* sits under the grid but above everything else */
+  pointer-events: auto;
+}
+
+.tracking-panel {
+  margin-top: 20px;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.home-contents{
+  position: relative; 
+  z-index: 1010; 
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.class-focus-popup {
+  position: fixed;
+  top: 51px;
+  left: 50%;
+  transform: translateX(-52%);
+  background: rgb(177, 193, 214);
+  padding: 10px 10px;
+  color: rgb(62, 62, 203);
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.home-focus-popup {
+  position: fixed;
+  top: 51px;
+  left: 52%;
+  transform: translateX(-52%);
+  background: rgb(236, 234, 234);
+  padding: 6px 10px;
+  color: rgb(125, 93, 13);
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.focus-eye-icon {
+  width: 30px;
+  height: 30px;
+  opacity: 0.8;
+}
+
+
+.class-focus-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* perfect center */
+  background: white;
+  color: #1a73e8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 10;
+}
+
+body.enlarge-mode .classroom-sidebar {
+  display: none !important;
+}
+
+body.enlarge-mode .classroom-sidebar {
+  width: 100% !important;
+}
+
+.classes.enlarged,
+.classes.click-error-enlarged {
+  transform: scale(1.07);
+  transition: transform 0.3s ease-in-out;
+}
+
+.classes.enlarged {
+  transform: scale(1.01);
+  transition: transform 0.5s ease;
+  z-index: 1500;
+}
+
+.classes.click-error-enlarged {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
