@@ -17,7 +17,7 @@ export const Classroom = ({ classes }) => {
     <div style={{ display: 'flex' }}>
       <div className='classroom-sidebar'>
         <div className="classroom-sidebar-logo">
-          <Link to="lms">
+          <Link to={'/lms'}>
             <img src={blackboard} alt="" />
           </Link>
           <h4>EaseRoom</h4>
