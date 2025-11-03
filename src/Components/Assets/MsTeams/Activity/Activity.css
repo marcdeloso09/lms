@@ -137,3 +137,113 @@
 .back-btn:hover {
   background-color: #3a3a3a;
 }
+
+.activity-item {
+  background-color: #2a2a2a;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px; /* ↓ Reduced from 300px */
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.activity-item:hover {
+  background-color: #3a3a3a;
+  transform: scale(1.02);
+}
+
+.activity-item.active {
+  background-color: #4a6cf7;
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.activity-item.active .activity-class,
+.activity-item.active .activity-author {
+  color: #fff;
+}
+
+.activity-time {
+  font-size: 0.7rem;
+  color: #aaa;
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+}
+
+.behavior-overlay {
+  margin-top: 20px;
+  background: #4b4444;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.activity-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.activity-container {
+  position: relative; 
+  z-index: 1010;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.activity-container.enlarged,
+.activity-container.click-error-enlarged {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Focused and Hidden States (copied pattern from Modules) */
+.focused-activity {
+  background-color: #283e8a !important;
+  border: 2px solid #4a6cf7;
+  box-shadow: 0 0 12px rgba(74, 108, 247, 0.6);
+  transform: scale(1.03);
+  z-index: 5;
+  transition: all 0.3s ease-in-out;
+}
+
+.hidden-activity {
+  opacity: 0.3;
+  filter: blur(3px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Focus Mode Label */
+.focus-mode-label {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: #1e3a8a;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
