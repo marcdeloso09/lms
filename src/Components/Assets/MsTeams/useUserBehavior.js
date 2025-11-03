@@ -1,156 +1,180 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-export default function useUserBehavior(containerClass = "chat-container") {
+export default function useCanvaBehavior(containerClass = "chat-container") {
   const [scrollVelocity, setScrollVelocity] = useState(0);
   const [hoverDuration, setHoverDuration] = useState(0);
-  const [clickErrorRate, setClickErrorRate] = useState(0);
-  const [focusMode, setFocusMode] = useState(false);
-  const [clickModeActive, setClickModeActive] = useState(false);
   const [action, setAction] = useState("Normal");
-  const [focusedChatIds, setFocusedChatIds] = useState([]); // ✅ Added
+  const [focusMode, setFocusMode] = useState(false);
+  const [focusedChatIds, setFocusedChatIds] = useState([]);
+  const [clickErrorRate, setClickErrorRate] = useState(0);
+  const [clickModeActive, setClickModeActive] = useState(false);
 
   // Refs
-  const lastScrollY = useRef(0);
+  const lastScrollY = useRef(window.scrollY);
   const lastTime = useRef(Date.now());
-  const hoverStart = useRef(null);
+  const hoverStartTime = useRef(null);
+  const enlargeTimeoutRef = useRef(null);
+  const clickModeTimeoutRef = useRef(null);
   const totalClicksRef = useRef(0);
   const errorClicksRef = useRef(0);
-  const hoverTimerRef = useRef(null);
-  const focusTimeoutRef = useRef(null);
-  const clickErrorTimeoutRef = useRef(null);
 
-  /** 🧠 Save Behavior to LocalStorage */
-  const saveBehavior = useCallback((key, value) => {
-    const existing = JSON.parse(localStorage.getItem("userBehaviors")) || [];
-    existing.push({
-      timestamp: new Date().toLocaleString(),
-      key,
-      value,
-    });
-    localStorage.setItem("userBehaviors", JSON.stringify(existing));
-  }, []);
+  // --- ENLARGE MODE ---
+  const triggerEnlargeMode = useCallback(() => {
+    const container = document.querySelector(`.${containerClass}`);
+    if (!container) return;
 
-  /** 🖱️ Click Tracking */
+    document.body.classList.add("enlarge-mode");
+    container.classList.add("enlarged");
+
+    clearTimeout(enlargeTimeoutRef.current);
+    enlargeTimeoutRef.current = setTimeout(() => {
+      document.body.classList.remove("enlarge-mode");
+      container.classList.remove("enlarged");
+      if (!clickModeActive && !focusMode) setAction("Normal");
+    }, 10000);
+  }, [clickModeActive, focusMode, containerClass]);
+
+  // --- SCROLL DETECTION ---
   useEffect(() => {
-    const handleClick = (e) => {
-      totalClicksRef.current += 1;
-      const insideContainer = e.target.closest(`.${containerClass}`);
-      if (!insideContainer) errorClicksRef.current += 1;
+  const handleScroll = () => {
+    const currentY = window.scrollY;
+    const currentTime = Date.now();
+    const dy = Math.abs(currentY - lastScrollY.current);
+    const dt = (currentTime - lastTime.current) / 1000;
+    let rawVelocity = dt > 0 ? dy / dt : 0;
 
-      const rawRate =
-        (errorClicksRef.current / totalClicksRef.current) * 100;
+    // --- Smooth cap logic ---
+    const maxVelocity = 30;
+    const smoothingFactor = 0.1; // smaller = smoother easing
+    const cappedVelocity =
+      rawVelocity > maxVelocity
+        ? scrollVelocity + (maxVelocity - scrollVelocity) * smoothingFactor
+        : rawVelocity;
 
-      const maxRate = 20;
-      const smoothingFactor = 0.1;
-      const easedRate =
-        rawRate > maxRate
-          ? clickErrorRate + (maxRate - clickErrorRate) * smoothingFactor
-          : rawRate;
+    setScrollVelocity(cappedVelocity);
+    lastScrollY.current = currentY;
+    lastTime.current = currentTime;
 
-      setClickErrorRate(easedRate);
-
-      // Trigger alert behavior if high error rate
-      if (easedRate >= 15 && !clickModeActive) {
-        setClickModeActive(true);
-        setAction("Click Error Mode Active");
-        saveBehavior("Click Error Rate Trigger (>15%)", `${easedRate.toFixed(1)}%`);
-
-        const container = document.querySelector(`.${containerClass}`);
-        if (container) container.classList.add("click-error-enlarged");
-
-        clearTimeout(clickErrorTimeoutRef.current);
-        clickErrorTimeoutRef.current = setTimeout(() => {
-          setClickModeActive(false);
-          setAction("Normal Layout");
-          if (container) container.classList.remove("click-error-enlarged");
-          totalClicksRef.current = 0;
-          errorClicksRef.current = 0;
-          setClickErrorRate(0);
-        }, 10000);
+    // Trigger when velocity is within the slow range
+    if (cappedVelocity < 30 && cappedVelocity > 0) {
+        clearTimeout(window.scrollDelayTimeout);
+        window.scrollDelayTimeout = setTimeout(() => {
+          setAction("Slow Scroll Detected");
+          saveBehavior("Scroll Velocity (<30px/s)", `${cappedVelocity.toFixed(1)} px/s`);
+          triggerEnlargeMode();
+        }, 2000);
       }
-    };
+  };
 
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, [clickErrorRate, clickModeActive, containerClass, saveBehavior]);
+  lastScrollY.current = window.scrollY;
+  lastTime.current = Date.now();
 
-  /** 🧭 Scroll Tracking */
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      const currentTime = Date.now();
-      const dy = Math.abs(currentY - lastScrollY.current);
-      const dt = (currentTime - lastTime.current) / 1000;
-      const rawVelocity = dt > 0 ? dy / dt : 0;
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [scrollVelocity, triggerEnlargeMode]);
 
-      const maxVelocity = 30;
-      const smoothingFactor = 0.1;
-      const smoothedVelocity =
-        rawVelocity > maxVelocity
-          ? scrollVelocity + (maxVelocity - scrollVelocity) * smoothingFactor
-          : rawVelocity;
 
-      setScrollVelocity(smoothedVelocity);
-      lastScrollY.current = currentY;
-      lastTime.current = currentTime;
+  // --- HOVER HANDLERS ---
+  const handleMouseEnter = (id) => {
+  hoverStartTime.current = Date.now();
+  const hoverInterval = setInterval(() => {
+    const elapsed = ((Date.now() - hoverStartTime.current) / 1000).toFixed(1);
+    setHoverDuration(elapsed);
+  }, 100);
+  window.hoverInterval = hoverInterval;
 
-      if (smoothedVelocity < 30 && smoothedVelocity > 0) {
-        setAction("Slow Scroll Detected");
-        saveBehavior("Scroll Velocity (<30px/s)", `${smoothedVelocity.toFixed(1)} px/s`);
-      }
-    };
+  setTimeout(() => {
+    const currentElapsed = ((Date.now() - hoverStartTime.current) / 1000).toFixed(1);
+    setFocusMode(true);
+    setFocusedChatIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    saveBehavior("Hover Duration (<3s)", `${currentElapsed}s`);
+    setAction("Focus View");
 
-    lastScrollY.current = window.scrollY;
-    lastTime.current = Date.now();
+    clearTimeout(window.focusTimeout);
+    window.focusTimeout = setTimeout(() => {
+      setFocusMode(false);
+      setFocusedChatIds([]);
+      if (!clickModeActive) setAction("Normal Layout");
+    }, 10000);
+  }, 3000);
+};
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollVelocity, containerClass, saveBehavior]);
 
-  /** 🧍 Hover Tracking */
-  const handleMouseEnter = useCallback((id) => {
-    hoverStart.current = Date.now();
-    hoverTimerRef.current = setInterval(() => {
-      const elapsed = ((Date.now() - hoverStart.current) / 1000).toFixed(1);
-      setHoverDuration(elapsed);
-    }, 100);
-
-    focusTimeoutRef.current = setTimeout(() => {
-      setFocusMode(true);
-      setFocusedChatIds((prev) => (prev.includes(id) ? prev : [...prev, id])); // ✅ Added
-      setAction("Focus Mode");
-      saveBehavior("Hover Duration (<3s)", `${hoverDuration}s`);
-    }, 3000);
-  }, [hoverDuration, saveBehavior]);
-
-  const handleMouseLeave = useCallback(() => {
-    clearInterval(hoverTimerRef.current);
-    clearTimeout(focusTimeoutRef.current);
+  const handleMouseLeave = () => {
+    clearInterval(window.hoverInterval);
     setHoverDuration(0);
-    setFocusMode(false);
-    setFocusedChatIds([]); // ✅ Reset on leave
-    setAction("Normal");
-  }, []);
+    hoverStartTime.current = null;
+    if (!clickModeActive) setAction("Hovering over classes");
+  };
 
-  /** 🔚 Cleanup */
+  // --- CLICK ERROR MODE ---
+  const triggerClickErrorMode = useCallback((rate) => {
+      const container = document.querySelector(`.${containerClass}`);
+      if (!container) return;
+
+      setClickModeActive(true);
+      setAction("Click Error Mode");
+      saveBehavior("Click Error Rate Trigger (>15%)", `${rate.toFixed(1)}%`);
+      container?.classList.add("click-error-enlarged");
+
+      clearTimeout(clickModeTimeoutRef.current);
+      clickModeTimeoutRef.current = setTimeout(() => {
+        setClickModeActive(false);
+        container.classList.remove("click-error-enlarged");
+        totalClicksRef.current = 0;
+        errorClicksRef.current = 0;
+        setClickErrorRate(0);
+        setAction("Normal Layout");
+      }, 10000);
+    },
+    [containerClass]
+  );
+
+  const saveBehavior = (key, value) => {
+    const existing = JSON.parse(localStorage.getItem("userBehaviors")) || [];
+    existing.push({ timestamp: new Date().toLocaleString(), key, value });
+    localStorage.setItem("userBehaviors", JSON.stringify(existing));
+  };
+
+  // --- CLICK TRACKING ---
   useEffect(() => {
-    return () => {
-      clearInterval(hoverTimerRef.current);
-      clearTimeout(focusTimeoutRef.current);
-      clearTimeout(clickErrorTimeoutRef.current);
-    };
-  }, []);
+  const handleClick = (e) => {
+    totalClicksRef.current += 1;
+    const insideContainer = !!e.target.closest(`.${containerClass}`);
+    if (!insideContainer) errorClicksRef.current += 1;
 
-  /** 🎯 Return Tracked Values */
+    const rawRate =
+      (errorClicksRef.current / totalClicksRef.current) * 100;
+
+    const maxRate = 20;
+    const smoothingFactor = 0.1; 
+    const easedRate =
+      rawRate > maxRate
+        ? clickErrorRate + (maxRate - clickErrorRate) * smoothingFactor
+        : rawRate;
+
+    setClickErrorRate(easedRate);
+
+    if (easedRate >= 14 && !clickModeActive) {
+      triggerClickErrorMode(easedRate);
+    }
+  };
+
+  document.addEventListener("click", handleClick);
+  return () => document.removeEventListener("click", handleClick);
+}, [clickErrorRate, clickModeActive, triggerClickErrorMode, containerClass]);
+    
+    
+  // Return all tracked behavior values and handlers
   return {
     scrollVelocity,
     hoverDuration,
     clickErrorRate,
-    focusMode,
-    clickModeActive,
     action,
     handleMouseEnter,
     handleMouseLeave,
-    focusedChatIds, // ✅ Added return
+    clickModeActive,
+    focusMode,
+    focusedChatIds,
   };
 }
