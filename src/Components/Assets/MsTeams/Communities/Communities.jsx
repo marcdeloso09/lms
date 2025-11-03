@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Communities.css";
 
-export default function Communities() {
+export default function Communities({ containerClass = "class-grid-container" }) {
   const navigate = useNavigate();
 
   // --- States ---
@@ -20,10 +20,10 @@ export default function Communities() {
   const hoverStartTime = useRef(null);
   const enlargeTimeoutRef = useRef(null);
   const clickModeTimeoutRef = useRef(null);
-  const idleTimeoutRef = useRef(null);
   const totalClicksRef = useRef(0);
   const errorClicksRef = useRef(0);
 
+  // --- Class Data ---
   const classes = [
     { id: 1, title: "Mathematics", teacher: "Prof." },
     { id: 2, title: "Biology", teacher: "Dr." },
@@ -41,9 +41,9 @@ export default function Communities() {
     localStorage.setItem("userBehaviors", JSON.stringify(existing));
   };
 
-  // --- Enlarge Mode ---
+  // --- ENLARGE MODE (identical to useCanvaBehavior) ---
   const triggerEnlargeMode = useCallback(() => {
-    const container = document.querySelector(".class-card");
+    const container = document.querySelector(`.${containerClass}`);
     if (!container) return;
 
     document.body.classList.add("enlarge-mode");
@@ -55,18 +55,16 @@ export default function Communities() {
       container.classList.remove("enlarged");
       if (!clickModeActive && !focusMode) setAction("Normal Layout");
     }, 10000);
-  }, [clickModeActive, focusMode]);
+  }, [clickModeActive, focusMode, containerClass]);
 
-  // --- Scroll Detection + Idle Delay ---
+   // --- SCROLL DETECTION ---
   useEffect(() => {
-    let lastVelocity = 0;
-
     const handleScroll = () => {
       const currentY = window.scrollY;
       const currentTime = Date.now();
       const dy = Math.abs(currentY - lastScrollY.current);
       const dt = (currentTime - lastTime.current) / 1000;
-      const rawVelocity = dt > 0 ? dy / dt : 0;
+      let rawVelocity = dt > 0 ? dy / dt : 0;
 
       const maxVelocity = 30;
       const smoothingFactor = 0.1;
@@ -78,70 +76,38 @@ export default function Communities() {
       setScrollVelocity(cappedVelocity);
       lastScrollY.current = currentY;
       lastTime.current = currentTime;
-      lastVelocity = cappedVelocity;
 
-      // Always reset sidebar visibility on scroll
-      clearTimeout(idleTimeoutRef.current);
-      document.body.classList.remove("sidebar-hidden");
-
-      // --- If user is scrolling slowly (≤30px/s) ---
-      if (cappedVelocity <= 30 && cappedVelocity > 0) {
+      // --- SAVE on slow scroll ---
+      if (cappedVelocity < 30 && cappedVelocity > 0) {
         clearTimeout(window.scrollDelayTimeout);
-
-        // 🕒 2-second delay before enlarging
         window.scrollDelayTimeout = setTimeout(() => {
           setAction("Slow Scroll Detected");
+          saveBehavior("Scroll Velocity (<30px/s)", `${cappedVelocity.toFixed(1)} px/s`);
           triggerEnlargeMode();
-          saveBehavior("Scroll Velocity (≤30px/s)", cappedVelocity.toFixed(2));
-
-          // 🕒 Then, another 2-second delay before hiding sidebar (idle)
-          idleTimeoutRef.current = setTimeout(() => {
-            const noMovement = Math.abs(window.scrollY - lastScrollY.current) < 2;
-            if (noMovement || lastVelocity <= 30) {
-              document.body.classList.add("sidebar-hidden");
-              setAction("Sidebar Hidden (Idle after 2s Slow Scroll)");
-            }
-          }, 2000);
         }, 2000);
-      } else {
-        setAction("Normal Scrolling");
       }
     };
 
-    lastScrollY.current = window.scrollY;
-    lastTime.current = Date.now();
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    const timeoutRef = idleTimeoutRef.current; // ✅ copy ref to avoid ESLint warning
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(window.scrollDelayTimeout);
-      clearTimeout(timeoutRef);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollVelocity, triggerEnlargeMode]);
 
-  // --- Hover Handlers ---
+  // --- HOVER HANDLERS ---
   const handleMouseEnter = (id) => {
     hoverStartTime.current = Date.now();
-    const hoverInterval = setInterval(() => {
+
+    clearInterval(window.hoverInterval);
+    window.hoverInterval = setInterval(() => {
       const elapsed = ((Date.now() - hoverStartTime.current) / 1000).toFixed(1);
       setHoverDuration(elapsed);
     }, 100);
-    window.hoverInterval = hoverInterval;
 
     setTimeout(() => {
+      const currentElapsed = ((Date.now() - hoverStartTime.current) / 1000).toFixed(1);
+      saveBehavior("Hover Duration (<3s)", `${currentElapsed}s`);
       setFocusMode(true);
-      setAction("Focus Mode Triggered");
-      setFocusedClassIds((prev) => {
-        if (!prev.includes(id)) {
-          const updated = [...prev, id];
-          saveBehavior("Hover Duration (>3s)", `Focused: ${updated.join(", ")}`);
-          return updated;
-        }
-        return prev;
-      });
+      setFocusedClassIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+      setAction("Focus View");
 
       clearTimeout(window.focusTimeout);
       window.focusTimeout = setTimeout(() => {
@@ -156,38 +122,41 @@ export default function Communities() {
     clearInterval(window.hoverInterval);
     setHoverDuration(0);
     hoverStartTime.current = null;
+    if (!clickModeActive) setAction("Hovering over classes");
   };
 
-  // --- Click Error Mode ---
-  const triggerClickErrorMode = useCallback((rate) => {
-    const container = document.querySelector(".class-card");
-    if (!container) return;
+  // --- CLICK ERROR MODE ---
+  const triggerClickErrorMode = useCallback(
+    (rate) => {
+      const container = document.querySelector(`.${containerClass}`);
+      if (!container) return;
 
-    setClickModeActive(true);
-    setAction("Click Error Mode Active");
-    saveBehavior("Click Error Rate Trigger (>15%)", `${rate.toFixed(1)}%`);
-    container.classList.add("click-error-enlarged");
+      setClickModeActive(true);
+      setAction("Click Error Mode");
+      saveBehavior("Click Error Rate Trigger (>15%)", `${rate.toFixed(1)}%`);
+      container.classList.add("click-error-enlarged");
 
-    clearTimeout(clickModeTimeoutRef.current);
-    clickModeTimeoutRef.current = setTimeout(() => {
-      setClickModeActive(false);
-      container.classList.remove("click-error-enlarged");
-      totalClicksRef.current = 0;
-      errorClicksRef.current = 0;
-      setClickErrorRate(0);
-      setAction("Normal Layout");
-    }, 10000);
-  }, []);
+      clearTimeout(clickModeTimeoutRef.current);
+      clickModeTimeoutRef.current = setTimeout(() => {
+        setClickModeActive(false);
+        container.classList.remove("click-error-enlarged");
+        totalClicksRef.current = 0;
+        errorClicksRef.current = 0;
+        setClickErrorRate(0);
+        setAction("Normal Layout");
+      }, 10000);
+    },
+    [containerClass]
+  );
 
-  // --- Click Tracking ---
+  // --- CLICK TRACKING ---
   useEffect(() => {
     const handleClick = (e) => {
       totalClicksRef.current += 1;
-      const insideContainer = !!e.target.closest(".class-card");
+      const insideContainer = !!e.target.closest(`.${containerClass}`);
       if (!insideContainer) errorClicksRef.current += 1;
 
-      const rawRate =
-        (errorClicksRef.current / totalClicksRef.current) * 100;
+      const rawRate = (errorClicksRef.current / totalClicksRef.current) * 100;
       const maxRate = 20;
       const smoothingFactor = 0.1;
       const easedRate =
@@ -196,24 +165,27 @@ export default function Communities() {
           : rawRate;
 
       setClickErrorRate(easedRate);
-      if (easedRate >= 15 && !clickModeActive) triggerClickErrorMode(easedRate);
+      if (easedRate >= 15 && !clickModeActive)
+        triggerClickErrorMode(easedRate);
     };
 
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
-  }, [clickErrorRate, clickModeActive, triggerClickErrorMode]);
+  }, [clickErrorRate, clickModeActive, triggerClickErrorMode, containerClass]);
 
-  // --- Cleanup ---
+  // --- CLEANUP ---
   useEffect(() => {
+    const enlargeSnapshot = enlargeTimeoutRef.current;
+    const clickSnapshot = clickModeTimeoutRef.current;
     return () => {
-      clearTimeout(enlargeTimeoutRef.current);
-      clearTimeout(clickModeTimeoutRef.current);
-      clearTimeout(idleTimeoutRef.current);
+      clearTimeout(enlargeSnapshot);
+      clearTimeout(clickSnapshot);
       clearInterval(window.hoverInterval);
       clearTimeout(window.focusTimeout);
     };
   }, []);
 
+  // --- NAVIGATION HANDLER ---
   const handleViewClick = (cls) =>
     navigate("/msteams/communities/activity", { state: { cls } });
 
@@ -222,12 +194,16 @@ export default function Communities() {
     <>
       {clickModeActive && <div className="click-error-overlay" />}
 
-      <div className={`class-grid-container ${focusMode ? "focus-active" : ""}`}>
+      <div
+        className={`${containerClass} ${focusMode ? "focus-active" : ""}`}
+      >
         {classes.map((cls) => (
           <div
             key={cls.id}
             className={`class-card ${
-              focusMode && !focusedClassIds.includes(cls.id) ? "hidden-card" : ""
+              focusMode && !focusedClassIds.includes(cls.id)
+                ? "hidden-card"
+                : ""
             }`}
             onMouseEnter={() => handleMouseEnter(cls.id)}
             onMouseLeave={handleMouseLeave}
@@ -240,7 +216,10 @@ export default function Communities() {
               <p className="class-teacher">
                 Teacher: <span>{cls.teacher}</span>
               </p>
-              <button className="class-view" onClick={() => handleViewClick(cls)}>
+              <button
+                className="class-view"
+                onClick={() => handleViewClick(cls)}
+              >
                 view
               </button>
             </div>
