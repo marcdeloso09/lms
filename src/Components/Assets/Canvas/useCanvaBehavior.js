@@ -35,35 +35,59 @@ export default function useCanvaBehavior(containerClass = "chat-container") {
   }, [clickModeActive, focusMode, containerClass]);
 
   // --- SCROLL DETECTION ---
-  useEffect(() => {
+useEffect(() => {
   const handleScroll = () => {
     const currentY = window.scrollY;
     const currentTime = Date.now();
     const dy = Math.abs(currentY - lastScrollY.current);
     const dt = (currentTime - lastTime.current) / 1000;
+
     let rawVelocity = dt > 0 ? dy / dt : 0;
 
-    // --- Smooth cap logic ---
-    const maxVelocity = 30;
-    const smoothingFactor = 0.1; // smaller = smoother easing
-    const cappedVelocity =
+    // --- HARD CAP at 100 px/s ---
+    rawVelocity = Math.min(rawVelocity, 100);
+
+    // --- SLOWER SMOOTHING ---
+    const maxVelocity = 50;
+    const smoothingFactor = 0.05; // <--- MUCH smoother & slower updates
+
+    const easedVelocity =
       rawVelocity > maxVelocity
         ? scrollVelocity + (maxVelocity - scrollVelocity) * smoothingFactor
-        : rawVelocity;
+        : scrollVelocity + (rawVelocity - scrollVelocity) * smoothingFactor;
 
-    setScrollVelocity(cappedVelocity);
+    setScrollVelocity(easedVelocity);
+
     lastScrollY.current = currentY;
     lastTime.current = currentTime;
 
-    // Trigger when velocity is within the slow range
-    if (cappedVelocity < 30 && cappedVelocity > 0) {
-        clearTimeout(window.scrollDelayTimeout);
-        window.scrollDelayTimeout = setTimeout(() => {
-          setAction("Slow Scroll Detected");
-          saveBehavior("Scroll Velocity (<30px/s)", `${cappedVelocity.toFixed(1)} px/s`);
-          triggerEnlargeMode();
-        }, 2000);
-      }
+    // --- Reset per scroll burst (keeps numbers clean) ---
+    clearTimeout(window.scrollResetTimeout);
+    window.scrollResetTimeout = setTimeout(() => {
+      setScrollVelocity(0);
+    }, 2000);
+
+    // --- CANCEL any pending slow-scroll triggers when scrolling fast ---
+    if (easedVelocity >= 30) {
+      clearTimeout(window.slowScrollTimeout);
+      return; // <--- IMPORTANT: do NOT continue slow logic
+    }
+
+    // --- SLOW SCROLL DETECTION (<30 px/s) ---
+    if (easedVelocity > 0 && easedVelocity < 30) {
+      clearTimeout(window.slowScrollTimeout);
+
+      window.slowScrollTimeout = setTimeout(() => {
+
+        // FINAL CHECK after 2s to avoid false triggers
+        if (scrollVelocity >= 30) return;
+
+        setAction("Slow Scroll Detected");
+        saveBehavior("Scroll Velocity (<30px/s)", `${easedVelocity.toFixed(1)} px/s`);
+        triggerEnlargeMode();
+
+      }, 2000);
+    }
   };
 
   lastScrollY.current = window.scrollY;
